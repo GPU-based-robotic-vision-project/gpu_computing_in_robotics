@@ -104,7 +104,7 @@ bool CCudaWrapper::translateBackward(pcl::PointCloud<pcl::PointXYZ> &point_cloud
 	return true;
 }
 
-bool CCudaWrapper::removePointsInsideSphere(pcl::PointCloud<pcl::PointXYZ> &point_cloud)
+bool CCudaWrapper::removePointsInsideSphere(pcl::PointCloud<pcl::PointXYZ> &point_cloud) //  cudawrapper中的函数 ： 去除园内点
 {
 	int threads;
 	float sphere_radius = 1.0f;
@@ -159,7 +159,7 @@ bool CCudaWrapper::removePointsInsideSphere(pcl::PointCloud<pcl::PointXYZ> &poin
 	return true;
 }
 
-bool CCudaWrapper::transform(pcl::PointCloud<pcl::PointXYZ> &point_cloud, Eigen::Affine3f matrix)
+bool CCudaWrapper::transform(pcl::PointCloud<pcl::PointXYZ> &point_cloud, Eigen::Affine3f matrix) // 转换点云
 {
 	int threads;
 	pcl::PointXYZ * d_point_cloud;

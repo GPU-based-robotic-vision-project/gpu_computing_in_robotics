@@ -11,7 +11,7 @@
 //#include <math_functions.hpp>
 #include <cuda_runtime.h>
 
-__global__ void kernel_cudaWarmUpGPU()
+__global__ void kernel_cudaWarmUpGPU() //定义出存储位置？
 {
 	int ind = blockIdx.x * blockDim.x + threadIdx.x;
 	ind = ind + 1;
@@ -30,9 +30,9 @@ __global__ void kernel_cudaTransformPoints(pcl::PointXYZ *d_point_cloud, int num
 
 	if(ind<number_of_points)
 	{
-		float vSrcVector[3] = {d_point_cloud[ind].x, d_point_cloud[ind].y, d_point_cloud[ind].z};
+		float vSrcVector[3] = {d_point_cloud[ind].x, d_point_cloud[ind].y, d_point_cloud[ind].z}; // 点的坐标
 		float vOut[3];
-		vOut[0]=d_matrix[0]*vSrcVector[0]+d_matrix[4]*vSrcVector[1]+d_matrix[8]*vSrcVector[2]+d_matrix[12];
+		vOut[0]=d_matrix[0]*vSrcVector[0]+d_matrix[4]*vSrcVector[1]+d_matrix[8]*vSrcVector[2]+d_matrix[12]; // 计算转换之后的坐标
    	 	vOut[1]=d_matrix[1]*vSrcVector[0]+d_matrix[5]*vSrcVector[1]+d_matrix[9]*vSrcVector[2]+d_matrix[13];
     	vOut[2]=d_matrix[2]*vSrcVector[0]+d_matrix[6]*vSrcVector[1]+d_matrix[10]*vSrcVector[2]+d_matrix[14];
 
@@ -62,7 +62,7 @@ __global__ void kernel_cudaRemovePointsInsideSphere
 		float y = d_point_cloud[ind].y;
 		float z = d_point_cloud[ind].z;
 
-		float distance = (x*x + y*y + z*z);
+		float distance = (x*x + y*y + z*z); // 计算距离
 
 		if(distance < sphere_radius * sphere_radius)
 		{
@@ -76,6 +76,8 @@ __global__ void kernel_cudaRemovePointsInsideSphere
 
 cudaError_t cudaRemovePointsInsideSphere(int threads, pcl::PointXYZ *d_point_cloud, 
 		bool *d_markers, int number_of_points, float sphere_radius)
+		// 除去园内的点
+		// 输入 点云， 点个数， 园的半径
 {
 	kernel_cudaRemovePointsInsideSphere<<<number_of_points/threads+1,threads>>>
 		(d_point_cloud,	d_markers, number_of_points, sphere_radius);
