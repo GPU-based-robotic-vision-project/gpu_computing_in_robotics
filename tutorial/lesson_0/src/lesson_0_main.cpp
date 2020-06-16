@@ -1,5 +1,6 @@
-#include <GL/freeglut.h>
-
+// #include <GL/freeglut.h>
+// #include <freeglut.h>
+#include "GL/gl.h"
 //PCL
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>

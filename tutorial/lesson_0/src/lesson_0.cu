@@ -8,10 +8,12 @@
 #include <thrust/sort.h>
 #include <thrust/sequence.h>
 #include <thrust/extrema.h>
+//#include <math_functions.hpp>
+#include <cuda_runtime.h>
 
 __global__ void kernel_cudaWarmUpGPU()
 {
-	int ind=blockIdx.x*blockDim.x+threadIdx.x;
+	int ind = blockIdx.x * blockDim.x + threadIdx.x;
 	ind = ind + 1;
 }
 
@@ -19,12 +21,12 @@ cudaError_t cudaWarmUpGPU()
 {
 	kernel_cudaWarmUpGPU<<<1,1>>>();
 	cudaDeviceSynchronize();
-	return cudaGetLastError(); 
+	return cudaGetLastError();
 }
 
 __global__ void kernel_cudaTransformPoints(pcl::PointXYZ *d_point_cloud, int number_of_points, float *d_matrix)
 {
-	int ind=blockIdx.x*blockDim.x+threadIdx.x;
+	int ind = blockIdx.x * blockDim.x + threadIdx.x;
 
 	if(ind<number_of_points)
 	{
@@ -59,9 +61,9 @@ __global__ void kernel_cudaRemovePointsInsideSphere
 		float x = d_point_cloud[ind].x;
 		float y = d_point_cloud[ind].y;
 		float z = d_point_cloud[ind].z;
-	
+
 		float distance = (x*x + y*y + z*z);
-	
+
 		if(distance < sphere_radius * sphere_radius)
 		{
 			d_markers[ind] = false;
